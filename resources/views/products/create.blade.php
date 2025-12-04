@@ -14,7 +14,7 @@
       <div class="container">
         <div class="row">
           <div class="d-flex justify-content-end p-0 mt-3">
-            <a href="" class="btn btn-dark">create</a>
+            <a href="{{ route('products.index') }}" class="btn btn-dark">Back</a>
           </div>
           <div class="card p-0 mt-3">
             <div class="card-header bg-dark text-white">
@@ -22,6 +22,7 @@
             </div>
             <div class="card-body shadow-lg">
               <form action="{{ route('products.store') }}" enctype="multipart/form-data" method="post">
+                
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>

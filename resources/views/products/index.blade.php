@@ -17,7 +17,7 @@
             <a href="{{ route('products.create') }}" class="btn btn-dark">create</a>
           </div>
           @if (Session::has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
             {{ Session::get('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
@@ -25,7 +25,7 @@
 
           <div>
             @if (Session::has('error'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
             {{ Session::get('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
@@ -53,20 +53,50 @@
                 </thead>
 
                 <thead>
+                  @if ($products->isNotEmpty())
+                    @foreach ($products as $product )
+                      <tr>
+                        <td>{{ $product->id }}</td>
+                        <td>
+                          @if (!empty($product->image))
+                            <img class="rounded" src="{{ asset('uploads/products/'.$product->image) }}" width="50" alt="">
+                          @else
+                          <img class="rounded" src="https://placehold.co/600x700" width="50" alt="">
+                          @endif
+                          
+                          
+                        </td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->sku }}</td>
+                        <td>${{ $product->price }}</td>
+                        <td>
+                          @if ($product->status == 'Active')
+                            <span class="badge bg-success">Active</span>
+                            @else
+                            <span class="badge bg-danger">Inactive</span>
+                          @endif
+                        </td>
+                        <td class="text-center">
+                          <a href="{{ route('products.edit', $product->id) }}" class="btn btn-dark btn-sm">Edit</a>
+                          <form action="{{ route('products.destroy' ,$product->id) }}"
+                            method="POST" class="d-inline"
+                            onsubmit="return confirm('are you sure you want to delete this product?')">
+                          
+                            @csrf
+                            @method('DELETE')
+                            <button  type="submit" class="btn btn-danger btn-sm">Delete</button>
+                          
+                          </form>
+                        </td>
+                      </tr>
+                    @endforeach
+                  @else
                   <tr>
-                    <td>1</td>
-                    <td></td>
-                    <td>Dummy Product</td>
-                    <td>12312</td>
-                    <td>$100</td>
-                    <td>
-                      Active
-                    </td>
-                    <td class="text-center">
-                      <a href="#" class="btn btn-dark btn-sm">Edit</a>
-                      <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                    </td>
-                  </tr>
+                    <td colspan="7" class="text-center">No products found</td>
+                  </tr>  
+                    
+                  @endif
+                  
                 </thead>
                 
               </table>
